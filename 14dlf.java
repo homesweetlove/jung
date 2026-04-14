@@ -17,8 +17,13 @@ public class Main {
             map.put(name, map.getOrDefault(name, 0) + point);
             List<String> keys = new ArrayList<>(map.keySet());
             Collections.sort(keys);
-            for (String key : keys)
-                System.out.println("(" + key + ", " + map.get(key) + ")");
+            for (String key : keys) {
+                System.out.print(key + " " + map.get(key));
+                if (!key.equals(keys.get(keys.size() - 1))) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println();
         }
     }
 }
