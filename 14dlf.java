@@ -45,10 +45,10 @@ public class Problem2 {
 
 import java.util.*;
 
-public class Problem3 {
+public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        TreeMap<String, Integer> map = new TreeMap<>();
+        HashMap<String, Integer> map = new HashMap<>();
         System.out.println("** 포인트 관리 프로그램입니다 **");
         while (true) {
             System.out.print("이름과 포인트 입력>> ");
@@ -56,11 +56,14 @@ public class Problem3 {
             if (name.equals("그만")) break;
             int point = sc.nextInt();
             map.put(name, map.getOrDefault(name, 0) + point);
-            for (Map.Entry<String, Integer> e : map.entrySet())
-                System.out.println("(" + e.getKey() + ", " + e.getValue() + ")");
+            List<String> keys = new ArrayList<>(map.keySet());
+            Collections.sort(keys);
+            for (String key : keys)
+                System.out.println("(" + key + ", " + map.get(key) + ")");
         }
     }
 }
+
 
 
 
