@@ -22,21 +22,16 @@ public class Problem4 {
         Vector<Shape> v = new Vector<>();
 
         while (true) {
-            System.out.print("삽입(1), 삭제(2), 모두 보기(3), 종료(4)>> ");
-            int cmd = Integer.parseInt(sc.nextLine());
+            int cmd = sc.nextInt();
 
             if (cmd == 1) {
-                System.out.print("Line(1), Rect(2), Circle(3)>> ");
-                int type = Integer.parseInt(sc.nextLine());
-
+                int type = sc.nextInt();
                 if (type == 1) v.add(new Line());
                 else if (type == 2) v.add(new Rect());
                 else if (type == 3) v.add(new Circle());
             } 
             else if (cmd == 2) {
-                System.out.print("삭제할 도형의 위치>> ");
-                int idx = Integer.parseInt(sc.nextLine());
-
+                int idx = sc.nextInt();
                 if (idx < 1 || idx > v.size())
                     System.out.println("삭제할 수 없습니다.");
                 else
