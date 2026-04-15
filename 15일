@@ -1,0 +1,246 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct ListNode {
+    char *name;
+    struct ListNode *link;
+} ListNode;
+
+typedef struct {
+    ListNode *head;
+} CircularList;
+
+void init_list(CircularList *list) {
+    list->head = NULL;
+}
+
+void insert_first(CircularList *list, char *name) {
+    ListNode *node = (ListNode *)malloc(sizeof(ListNode));
+    node->name = name;
+
+    if (list->head == NULL) {
+        list->head = node;
+        node->link = node;
+    } else {
+        ListNode *p = list->head;
+        while (p->link != list->head) {
+            p = p->link;
+        }
+        node->link = list->head;
+        p->link = node;
+        list->head = node;
+    }
+}
+
+void print_list(CircularList *list, int count) {
+    if (list->head == NULL) return;
+
+    ListNode *p = list->head;
+    for (int i = 0; i < count; i++) {
+        printf("Current turn=%s\n", p->name);
+        p = p->link;
+    }
+}
+
+int main(void) {
+    CircularList list;
+    init_list(&list);
+
+    insert_first(&list, "PARK");
+    insert_first(&list, "CHOI");
+    insert_first(&list, "LEE");
+    insert_first(&list, "JUNG");
+    insert_first(&list, "KIM");
+
+    print_list(&list, 10);
+
+    return 0;
+}
+
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct ListNode {
+    int data;
+    struct ListNode *link;
+} ListNode;
+
+typedef struct {
+    ListNode *head;
+} CircularList;
+
+void init(CircularList *list) {
+    list->head = NULL;
+}
+
+void print_list(CircularList *list) {
+    if (list->head == NULL) return;
+
+    ListNode *p = list->head;
+    do {
+        printf("%d->", p->data);
+        p = p->link;
+    } while (p != list->head);
+    printf("\n");
+}
+
+void insert_first(CircularList *list, int item) {
+    ListNode *node = (ListNode *)malloc(sizeof(ListNode));
+    node->data = item;
+
+    if (list->head == NULL) {
+        list->head = node;
+        node->link = node;
+    } else {
+        ListNode *p = list->head;
+        while (p->link != list->head) {
+            p = p->link;
+        }
+        node->link = list->head;
+        p->link = node;
+        list->head = node;
+    }
+}
+
+void insert_last(CircularList *list, int item) {
+    ListNode *node = (ListNode *)malloc(sizeof(ListNode));
+    node->data = item;
+
+    if (list->head == NULL) {
+        list->head = node;
+        node->link = node;
+    } else {
+        ListNode *p = list->head;
+        while (p->link != list->head) {
+            p = p->link;
+        }
+        p->link = node;
+        node->link = list->head;
+    }
+}
+
+int main(void) {
+    CircularList list;
+    init(&list);
+
+    insert_first(&list, 30);
+    insert_first(&list, 20);
+    insert_first(&list, 10);
+    insert_last(&list, 40);
+
+    print_list(&list);
+
+    return 0;
+}
+
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct StackNode {
+    int data;
+    int min;              // 이 노드까지의 최소값
+    struct StackNode *link;
+} StackNode;
+
+typedef struct {
+    StackNode *top;
+} StackType;
+
+void init(StackType *s) {
+    s->top = NULL;
+}
+
+int is_empty(StackType *s) {
+    return s->top == NULL;
+}
+
+void push(StackType *s, int item) {
+    StackNode *node = (StackNode *)malloc(sizeof(StackNode));
+    node->data = item;
+
+    if (is_empty(s)) {
+        node->min = item;
+    } else {
+        int cur_min = s->top->min;
+        node->min = (item < cur_min) ? item : cur_min;
+    }
+
+    node->link = s->top;
+    s->top = node;
+}
+
+int pop(StackType *s) {
+    if (is_empty(s)) return -1;
+    StackNode *temp = s->top;
+    int item = temp->data;
+    s->top = temp->link;
+    free(temp);
+    return item;
+}
+
+int peek(StackType *s) {
+    if (is_empty(s)) return -1;
+    return s->top->data;
+}
+
+int peek_min(StackType *s) {
+    if (is_empty(s)) return -1;
+    return s->top->min;
+}
+
+void print_stack(StackType *s) {
+    StackNode *p = s->top;
+    while (p != NULL) {
+        printf("%d->", p->data);
+        p = p->link;
+    }
+    printf("NULL\n");
+}
+
+int main(void) {
+    StackType s;
+    init(&s);
+
+    printf("Pushing elements onto the stack...\n");
+
+    push(&s, 3);
+    print_stack(&s);
+    printf("Min: %d\n", peek_min(&s));
+
+    push(&s, 5);
+    print_stack(&s);
+    printf("Min: %d\n", peek_min(&s));
+
+    push(&s, 2);
+    print_stack(&s);
+    printf("Min: %d\n", peek_min(&s));
+
+    push(&s, 1);
+    print_stack(&s);
+    printf("Min: %d\n", peek_min(&s));
+
+    printf("Popping elements from the stack...\n");
+
+    pop(&s);
+    print_stack(&s);
+    printf("Min: %d\n", peek_min(&s));
+
+    pop(&s);
+    print_stack(&s);
+    printf("Min: %d\n", peek_min(&s));
+
+    pop(&s);
+    print_stack(&s);
+    printf("Min: %d\n", peek_min(&s));
+
+    // 마지막 줄 줄바꿈 꼭 유지
+    return 0;
+}
